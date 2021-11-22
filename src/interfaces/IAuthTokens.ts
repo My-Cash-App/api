@@ -1,4 +1,4 @@
-export interface IGenerateTokens {
+export interface IAuthTokens {
   accessToken: string;
   refreshToken: string;
 }

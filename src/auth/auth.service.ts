@@ -14,7 +14,7 @@ import { UsersService } from '../users/users.service';
 import { CheckCodeDto, GetCodeDto } from './dto/auth.dto';
 import { add, differenceInMinutes } from 'date-fns';
 import { declOfNum } from '../utils';
-import { IGenerateTokens } from '../interfaces/IGenerateTokens';
+import { IAuthTokens } from '../interfaces/IAuthTokens';
 
 @Injectable()
 export class AuthService {
@@ -89,7 +89,7 @@ export class AuthService {
     return value;
   }
 
-  async checkCode(checkCodeDto: CheckCodeDto): Promise<IGenerateTokens> {
+  async checkCode(checkCodeDto: CheckCodeDto): Promise<IAuthTokens> {
     const { phone, code } = checkCodeDto;
 
     const user = await this.userRepository.findOne({
@@ -129,7 +129,7 @@ export class AuthService {
     throw new HttpException('Не верный код!', HttpStatus.NOT_FOUND);
   }
 
-  async refreshToken(token: string): Promise<IGenerateTokens> {
+  async refreshToken(token: string): Promise<IAuthTokens> {
     let userFromToken;
     try {
       userFromToken = this.jwtService.verify(token, {
@@ -166,7 +166,7 @@ export class AuthService {
     await this.codeRepository.destroy({ where: { userId } });
   }
 
-  private generateAuthTokens(user: User): IGenerateTokens {
+  private generateAuthTokens(user: User): IAuthTokens {
     const payload = { phone: user.phone, role: user.role.value, id: user.id };
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
