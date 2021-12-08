@@ -34,7 +34,7 @@ export class RolesGuard implements CanActivate {
 
       const role = await this.rolesService.getByValue(user.role);
 
-      if (role.weight > requiredRoleWeight) {
+      if (role.weight <= requiredRoleWeight) {
         return true;
       }
     } catch (e) {
