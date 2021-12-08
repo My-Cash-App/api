@@ -35,6 +35,7 @@ export class AuthService {
 
     return 'OK';
   }
+
   async getCode(getCodeDto: GetCodeDto): Promise<number> {
     const { phone } = getCodeDto;
     const roleValue = phone === 79529139340 ? 'SUPER_ADMIN' : 'USER';
