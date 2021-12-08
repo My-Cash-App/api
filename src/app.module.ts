@@ -10,6 +10,13 @@ import { Role } from './roles/roles.model';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { RefreshToken } from './auth/models/refresh-tokens.model';
+import { WalletsModule } from './wallets/wallets.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { TransactionCategoriesModule } from './transaction-categories/transaction-categories.module';
+import { TransactionSubCategory } from './transaction-categories/transaction-sub-categories.model';
+import { Wallet } from './wallets/wallets.model';
+import { Transaction } from './transactions/transactions.model';
+import { TransactionCategory } from './transaction-categories/transaction-categories.model';
 
 @Module({
   imports: [
@@ -23,12 +30,24 @@ import { RefreshToken } from './auth/models/refresh-tokens.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Code, Role, RefreshToken],
+      models: [
+        User,
+        Code,
+        Role,
+        Wallet,
+        Transaction,
+        RefreshToken,
+        TransactionCategory,
+        TransactionSubCategory,
+      ],
       autoLoadModels: true,
     }),
     UsersModule,
     AuthModule,
     RolesModule,
+    WalletsModule,
+    TransactionsModule,
+    TransactionCategoriesModule,
   ],
   providers: [
     {

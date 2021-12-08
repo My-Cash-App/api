@@ -3,7 +3,6 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
@@ -35,13 +34,13 @@ export class RolesGuard implements CanActivate {
 
       const role = await this.rolesService.getByValue(user.role);
 
-      if (role.weight <= requiredRoleWeight) {
+      if (role.weight > requiredRoleWeight) {
         return true;
       }
-
-      throw new ForbiddenException('Нет доступа!');
     } catch (e) {
       throw new ForbiddenException('Нет доступа!');
     }
+
+    throw new ForbiddenException('Нет доступа!');
   }
 }

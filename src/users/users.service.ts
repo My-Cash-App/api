@@ -33,10 +33,10 @@ export class UsersService {
     return user;
   }
 
-  getByPhone(phone: number): Promise<User> {
+  getByPhone(phone: number, include = {}): Promise<User> {
     return this.userRepository.findOne({
       where: { phone },
-      include: { all: true },
+      include,
     });
   }
 }

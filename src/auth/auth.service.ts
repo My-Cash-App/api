@@ -19,7 +19,6 @@ import { IAuthTokens } from '../interfaces/IAuthTokens';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User) private userRepository: typeof User,
     @InjectModel(Code) private codeRepository: typeof Code,
     @InjectModel(RefreshToken) private tokenRepository: typeof RefreshToken,
     private jwtService: JwtService,
@@ -28,9 +27,7 @@ export class AuthService {
   ) {}
 
   async logout(phone: number): Promise<string> {
-    const user = await this.userRepository.findOne({
-      where: { phone: phone },
-    });
+    const user = await this.usersService.getByPhone(phone);
 
     await this.tokenRepository.destroy({
       where: { userId: user.id },
@@ -92,10 +89,7 @@ export class AuthService {
   async checkCode(checkCodeDto: CheckCodeDto): Promise<IAuthTokens> {
     const { phone, code } = checkCodeDto;
 
-    const user = await this.userRepository.findOne({
-      where: { phone },
-      include: { all: true },
-    });
+    const user = await this.usersService.getByPhone(phone, { all: true });
 
     if (!user) {
       throw new HttpException(
@@ -151,7 +145,9 @@ export class AuthService {
       });
     }
 
-    const user = await this.usersService.getByPhone(userFromToken.phone);
+    const user = await this.usersService.getByPhone(userFromToken.phone, {
+      all: true,
+    });
 
     const authTokens = this.generateAuthTokens(user);
 

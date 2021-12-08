@@ -3,6 +3,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   Table,
@@ -11,6 +12,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Code } from '../auth/models/codes.model';
 import { Role } from '../roles/roles.model';
 import { RefreshToken } from '../auth/models/refresh-tokens.model';
+import { TransactionCategory } from '../transaction-categories/transaction-categories.model';
+import { TransactionSubCategory } from '../transaction-categories/transaction-sub-categories.model';
 
 interface UserCreationAttr {
   phone: number;
@@ -45,6 +48,12 @@ export class User extends Model<User, UserCreationAttr> {
 
   @HasOne(() => RefreshToken, { onDelete: 'cascade' })
   token: RefreshToken;
+
+  @HasMany(() => TransactionCategory, { onDelete: 'cascade' })
+  transactionCategory: TransactionCategory[];
+
+  @HasMany(() => TransactionSubCategory, { onDelete: 'cascade' })
+  transactionSubCategory: TransactionSubCategory[];
 
   @ApiProperty({
     example: 1,

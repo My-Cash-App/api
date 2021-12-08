@@ -7,12 +7,20 @@ import { Role } from '../roles/roles.model';
 import { AuthModule } from '../auth/auth.module';
 import { RolesService } from '../roles/roles.service';
 import { RefreshToken } from '../auth/models/refresh-tokens.model';
+import { TransactionCategory } from '../transaction-categories/transaction-categories.model';
+import { TransactionSubCategory } from '../transaction-categories/transaction-sub-categories.model';
 
 @Module({
   providers: [UsersService, RolesService],
   controllers: [UsersController],
   imports: [
-    SequelizeModule.forFeature([User, Role, RefreshToken]),
+    SequelizeModule.forFeature([
+      User,
+      Role,
+      RefreshToken,
+      TransactionCategory,
+      TransactionSubCategory,
+    ]),
     forwardRef(() => AuthModule),
   ],
   exports: [UsersService],
