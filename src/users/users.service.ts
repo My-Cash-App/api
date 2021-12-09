@@ -20,13 +20,18 @@ export class UsersService {
     return this.userRepository.findAll({ include: Role });
   }
 
+  async getProfile(id: number): Promise<User> {
+    return this.userRepository.findOne({
+      where: { id },
+      include: { all: true },
+    });
+  }
+
   async findOrCreateWhenAuth(
     findOrCreateWhenAuthDto: FindOrCreateWhenAuthDto,
   ): Promise<User> {
-    const { phone, roleId } = findOrCreateWhenAuthDto;
-
     const [user] = await this.userRepository.findOrCreate({
-      where: { phone, roleId },
+      where: findOrCreateWhenAuthDto,
       include: { all: true },
     });
 

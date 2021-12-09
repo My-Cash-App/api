@@ -9,6 +9,7 @@ import { RolesService } from '../roles/roles.service';
 import { RefreshToken } from '../auth/models/refresh-tokens.model';
 import { TransactionCategory } from '../transaction-categories/transaction-categories.model';
 import { TransactionSubCategory } from '../transaction-categories/transaction-sub-categories.model';
+import { Wallet } from '../wallets/wallets.model';
 
 @Module({
   providers: [UsersService, RolesService],
@@ -17,6 +18,7 @@ import { TransactionSubCategory } from '../transaction-categories/transaction-su
     SequelizeModule.forFeature([
       User,
       Role,
+      Wallet,
       RefreshToken,
       TransactionCategory,
       TransactionSubCategory,

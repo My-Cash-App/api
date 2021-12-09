@@ -14,6 +14,7 @@ import { Role } from '../roles/roles.model';
 import { RefreshToken } from '../auth/models/refresh-tokens.model';
 import { TransactionCategory } from '../transaction-categories/transaction-categories.model';
 import { TransactionSubCategory } from '../transaction-categories/transaction-sub-categories.model';
+import { Wallet } from '../wallets/wallets.model';
 
 interface UserCreationAttr {
   phone: number;
@@ -43,6 +44,17 @@ export class User extends Model<User, UserCreationAttr> {
   })
   phone: number;
 
+  @ApiProperty({
+    example: 1,
+    description: 'Role ID',
+  })
+  @ForeignKey(() => Role)
+  @Column({ type: DataType.INTEGER })
+  roleId: number;
+
+  @BelongsTo(() => Role)
+  role: Role;
+
   @HasOne(() => Code, { onDelete: 'cascade' })
   code: Code;
 
@@ -55,14 +67,6 @@ export class User extends Model<User, UserCreationAttr> {
   @HasMany(() => TransactionSubCategory, { onDelete: 'cascade' })
   transactionSubCategory: TransactionSubCategory[];
 
-  @ApiProperty({
-    example: 1,
-    description: 'Role ID',
-  })
-  @ForeignKey(() => Role)
-  @Column({ type: DataType.INTEGER })
-  roleId: number;
-
-  @BelongsTo(() => Role)
-  role: Role;
+  @HasMany(() => Wallet, { onDelete: 'cascade' })
+  wallet: Wallet[];
 }

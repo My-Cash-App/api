@@ -1,6 +1,15 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transaction } from '../transactions/transactions.model';
+import { User } from '../users/users.model';
 
 interface WalletCreationAttr {
   title: string;
@@ -46,6 +55,17 @@ export class Wallet extends Model<Wallet, WalletCreationAttr> {
   })
   description: string;
 
+  @ApiProperty({
+    example: 1,
+    description: 'User ID',
+  })
+  @ForeignKey(() => User)
+  @Column({ type: DataType.INTEGER })
+  userId: number;
+
+  @BelongsTo(() => User)
+  user: User;
+
   @HasMany(() => Transaction, { onDelete: 'cascade' })
-  users: Transaction[];
+  transactions: Transaction[];
 }
